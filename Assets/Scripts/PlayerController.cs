@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
+
+        if (Input.GetKey(KeyCode.Space))
+            CutStart();
     }
 
     private void HandleMovement()

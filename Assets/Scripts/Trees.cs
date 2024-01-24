@@ -1,8 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 public class Trees : MonoBehaviour
 {
+    public event EventHandler OnHit;
+
+    private PlayerController player;
+
     private enum States
     {
         Live,
@@ -64,9 +69,21 @@ public class Trees : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponentInParent<PlayerController>())
+        player = other.gameObject.GetComponentInParent<PlayerController>();
+        if(player)
         {
+            OnHit?.Invoke(this, EventArgs.Empty);
             Debug.Log("Hitted");
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        player = null;
+    }
+
+    public void ActivateStump()
+    {
+        stump.SetActive(true);
     }
 }

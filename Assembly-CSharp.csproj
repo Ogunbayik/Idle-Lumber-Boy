@@ -53,8 +53,10 @@
     <UnityVersion>2020.3.24f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Trees.cs" />
+    <Compile Include="Assets\Scripts\TreeHealthManager.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\TreeAnimationController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1972299276071144846}
   - component: {fileID: 1972299276068277678}
   - component: {fileID: 1972299276069244782}
-  - component: {fileID: 2495034835839618693}
   m_Layer: 0
   m_Name: TreeStump
   m_TagString: Untagged
@@ -83,20 +82,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2495034835839618693
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972299276071244206}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 71e7cb600453b0a4791c471c86dcb60a, type: 3}
 --- !u!1 &7493463881820888389
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,13 +95,16 @@ GameObject:
   - component: {fileID: 7493463881818686341}
   - component: {fileID: 6210639555067286767}
   - component: {fileID: 5023827497262544018}
+  - component: {fileID: -5388374336320300009}
+  - component: {fileID: -6852683104914228175}
   - component: {fileID: 5023827497262544019}
+  - component: {fileID: 1308648152}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &7493463881820455269
 Transform:
@@ -212,6 +200,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stump: {fileID: 1972299276071244206}
   logPrefab: {fileID: 1156474268741182858, guid: 0ced6cb6e5c398d4b84bf59e251bad70, type: 3}
+--- !u!114 &-5388374336320300009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493463881820888389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72c0e4b25419cf4d9e290013a27d7af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6852683104914228175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493463881820888389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc565a3d58326ba4ba5b70c1b481883f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &5023827497262544019
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -228,3 +240,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!95 &1308648152
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493463881820888389}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a65207967525baa468cc37afdf0b4bda, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
