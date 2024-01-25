@@ -7,6 +7,7 @@ public class Trees : MonoBehaviour
     public event EventHandler OnHit;
 
     private PlayerController player;
+    private TreeHealthManager healthManager;
 
     private enum States
     {
@@ -25,10 +26,21 @@ public class Trees : MonoBehaviour
 
     private float createTimer;
     private float startCreateTimer = 0.1f;
+    private float delayTimer = 1f;
+    private void Awake()
+    {
+        healthManager = GetComponent<TreeHealthManager>();
+    }
     void Start()
     {
         stump.SetActive(false);
         logsList = new List<GameObject>();
+        healthManager.OnDeath += HealthManager_OnDeath;
+    }
+
+    private void HealthManager_OnDeath(object sender, EventArgs e)
+    {
+        currentState = States.Death;
     }
 
     // Update is called once per frame
@@ -46,13 +58,22 @@ public class Trees : MonoBehaviour
 
     private void Death()
     {
-        if (logsList.Count < maxLogCount)
+        delayTimer -= Time.deltaTime;
+        if (delayTimer <= 0)
         {
-            createTimer -= Time.deltaTime;
-            if (createTimer <= 0)
+            stump.gameObject.SetActive(false);
+            if (logsList.Count < maxLogCount)
             {
-                CreateLog();
-                createTimer = startCreateTimer;
+                createTimer -= Time.deltaTime;
+                if (createTimer <= 0)
+                {
+                    CreateLog();
+                    createTimer = startCreateTimer;
+                }
+            }
+            else
+            {
+                Destroy(this.gameObject);
             }
         }
     }
@@ -64,7 +85,7 @@ public class Trees : MonoBehaviour
 
         var offsetZ = (float) logsList.Count / 4;
         var offsetPosition = new Vector3(0f, 0f, offsetZ);
-        log.transform.position = transform.position + offsetPosition;
+        log.transform.position = stump.transform.position + offsetPosition;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -73,7 +94,6 @@ public class Trees : MonoBehaviour
         if(player)
         {
             OnHit?.Invoke(this, EventArgs.Empty);
-            Debug.Log("Hitted");
         }
     }
 

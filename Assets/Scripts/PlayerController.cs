@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
-    private Animator animator;
-
     private const string HORIZONTAL_INPUT = "Horizontal";
     private const string VERTICAL_INPUT = "Vertical";
+    private const string CUT_ANIMATION_HASH = "Cut";
+
+    private CharacterController controller;
+    private Animator animator;
 
     [SerializeField] private float movementSpeed;
 
@@ -41,12 +42,12 @@ public class PlayerController : MonoBehaviour
 
     private void CutStart()
     {
-        animator.SetBool("Cut", true);
+        animator.SetBool(CUT_ANIMATION_HASH, true);
     }
 
     private void CutFinish()
     {
-        animator.SetBool("Cut", false);
+        animator.SetBool(CUT_ANIMATION_HASH, false);
     }
 
 }

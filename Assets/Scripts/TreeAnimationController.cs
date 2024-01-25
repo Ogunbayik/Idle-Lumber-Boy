@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TreeAnimationController : MonoBehaviour
 {
+    private const string DEATH_ANIMATON_HASH = "Death";
+    private const string HIT_ANIMATION_HASH = "Hit";
+
     private Trees tree;
     private TreeHealthManager healthManager;
 
@@ -22,16 +25,16 @@ public class TreeAnimationController : MonoBehaviour
 
     private void Tree_OnDeath(object sender, System.EventArgs e)
     {
-        animator.SetTrigger("Death");
+        animator.SetTrigger(DEATH_ANIMATON_HASH);
     }
 
     private void Tree_OnHit(object sender, System.EventArgs e)
     {
-        animator.SetBool("Hit", true);
+        animator.SetBool(HIT_ANIMATION_HASH, true);
     }
 
     private void ResetHitAnimation()
     {
-        animator.SetBool("Hit", false);
+        animator.SetBool(HIT_ANIMATION_HASH, false);
     }
 }
