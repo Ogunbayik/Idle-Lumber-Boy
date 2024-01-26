@@ -10,26 +10,32 @@ public class PlayerCarry : MonoBehaviour
     [SerializeField] private Transform logPrefab;
     [SerializeField] private Transform carryPosition;
 
-    private Vector3 hitNormal;
+    private List<GameObject> logList;
 
     private void Start()
     {
-        
+        logList = new List<GameObject>();
+
+        OnCarry += CreateLog;
     }
 
-
-    private void CreateLog()
+    private void CreateLog(object sender, EventArgs e)
     {
-        var logObj = Instantiate(logPrefab);
-        logObj.transform.position = carryPosition.position;
+        var logObj = Instantiate(logPrefab, carryPosition);
+        var offsetY = (float)logList.Count / 4f;
+
+        logObj.transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + offsetY, carryPosition.position.z);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        hitNormal = hit.normal;
         var log = hit.gameObject.GetComponent<Log>();
 
         if (log)
-            Debug.Log("Carry");
+        {
+            logList.Add(log.gameObject);
+            OnCarry?.Invoke(this, EventArgs.Empty);
+            Destroy(log.gameObject);
+        }
     }
 }

@@ -12,11 +12,16 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     [SerializeField] private float movementSpeed;
+    [SerializeField] private Transform body;
 
+    private float gravity = 0.5f;
+    private float movementY;
     private float horizontalInput;
     private float verticalInput;
 
     private Vector3 movementDirection;
+
+    private bool isMove;
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -26,7 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && !isMove)
             CutStart();
     }
 
@@ -35,9 +40,32 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxis(HORIZONTAL_INPUT);
         verticalInput = Input.GetAxis(VERTICAL_INPUT);
 
-        movementDirection = new Vector3(horizontalInput, 0f, verticalInput);
+        if (controller.isGrounded)
+            movementY = 0f;
+        else
+            movementY -= gravity * Time.deltaTime;
+
+        movementDirection = new Vector3(horizontalInput, movementY, verticalInput);
         movementDirection.Normalize();
-        controller.Move(movementDirection * movementSpeed * Time.deltaTime);
+
+        if (movementDirection != Vector3.zero)
+        {
+            controller.Move(movementDirection * movementSpeed * Time.deltaTime);
+            isMove = true;
+        }
+        else
+            isMove = false;
+
+        HandleRotation();
+    }
+
+    private void HandleRotation()
+    {
+        if (movementDirection != Vector3.zero)
+        {
+            var rotationY = Quaternion.LookRotation(movementDirection, Vector3.up);
+            body.transform.rotation = Quaternion.RotateTowards(body.transform.rotation, rotationY, 270 * Time.deltaTime);
+        }
     }
 
     private void CutStart()
