@@ -6,6 +6,8 @@ public class Flatbed : MonoBehaviour
 {
     private const string MOVEMENT_POINTS = "MovementPoints";
 
+    private Building building;
+
     private enum States
     {
         Load,
@@ -17,28 +19,41 @@ public class Flatbed : MonoBehaviour
     [SerializeField] private GameObject cargo;
     [SerializeField] private GameObject[] straps;
 
+    
     private Transform[] movementPoints;
     private Transform desiredPoint;
-    private float movementSpeed;
     private int movementIndex;
-    private int lastMovementIndex;
 
-    private float waitTimer;
-    private float startWaitTimer = 5f;
+    private int minLogCount = 3;
+    private int maxLogCount = 7;
+    private int desiredLogCount;
+    
+    private int minimumSpeed = 3;
+    private int maximumSpeed = 6;
+    private float movementSpeed;
+
+    private float loadTimer;
+    private float startLoadTimer = 1f;
+
+    private bool isLoaded;
     void Start()
     {
         movementPoints = GameObject.Find(MOVEMENT_POINTS).transform.GetComponentsInChildren<Transform>();
 
         ActivateCarryItems(false);
-        currentState = States.Move;
 
         movementIndex = 1;
+        movementSpeed = Random.Range(minimumSpeed, maximumSpeed);
+
         desiredPoint = GetNextPosition(movementIndex);
-        movementSpeed = Random.Range(3, 6);
-        waitTimer = startWaitTimer;
+        desiredLogCount = Random.Range(minLogCount, maxLogCount);
+
+        loadTimer = startLoadTimer;
+        isLoaded = false;
+
+        currentState = States.Move;
     }
 
-    // Update is called once per frame
     void Update()
     {
         switch(currentState)
@@ -54,16 +69,33 @@ public class Flatbed : MonoBehaviour
                 {
                     HandleMovement(desiredPoint);
                 }
+
+                if (distanceBetweenDesired <= 0.1f && isLoaded)
+                    Destroy(this.gameObject);
+
                 break;
             case States.Load:
-                waitTimer -= Time.deltaTime;
-                if(waitTimer <= 0f)
-                {
-                    waitTimer = startWaitTimer;
 
-                    desiredPoint = GetNextPosition(movementIndex);
-                    currentState = States.Move;
+                if (building.canSell)
+                    loadTimer -= Time.deltaTime;
+                else
+                    loadTimer = startLoadTimer;
+
+                if (loadTimer <= 0f)
+                {
+                    loadTimer = startLoadTimer;
                     ActivateCarryItems(true);
+
+                    if (desiredLogCount <= 0)
+                    {
+                        isLoaded = true;
+                        if (isLoaded)
+                        {
+                            movementIndex++;
+                            desiredPoint = GetNextPosition(movementIndex);
+                            currentState = States.Move;
+                        }
+                    }
                 }
                 break;
         }
@@ -85,7 +117,20 @@ public class Flatbed : MonoBehaviour
         for (int i = 0; i < straps.Length; i++)
         {
             straps[i].SetActive(isActive);
-
         }
+    }
+
+    public void DecreaseDesiredLogCount()
+    {
+        desiredLogCount--;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        building = other.gameObject.GetComponent<SellPlace>().GetComponentInParent<Building>();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        building = null;
     }
 }

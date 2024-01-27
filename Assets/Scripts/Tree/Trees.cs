@@ -8,6 +8,7 @@ public class Trees : MonoBehaviour
 
     private PlayerController player;
     private TreeHealthManager healthManager;
+    private CapsuleCollider capsuleCollider;
 
     private enum States
     {
@@ -30,6 +31,7 @@ public class Trees : MonoBehaviour
     private void Awake()
     {
         healthManager = GetComponent<TreeHealthManager>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
     void Start()
     {
@@ -58,6 +60,8 @@ public class Trees : MonoBehaviour
 
     private void Death()
     {
+        capsuleCollider.enabled = false;
+
         delayTimer -= Time.deltaTime;
         if (delayTimer <= 0)
         {
